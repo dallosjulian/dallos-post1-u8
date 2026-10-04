@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Eliminación de Categoría - Catálogo JPA</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-indigo-500 selection:text-white">
+
+    <!-- Barra de Navegación -->
+    <nav class="bg-slate-950/80 backdrop-blur border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">Catálogo JPA</span>
+                        <span class="text-xs block text-slate-400 font-medium">Unidad 8 &bull; Hibernate & Spring Data</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-1 sm:space-x-4">
+                    <a th:href="@{/categorias}" class="px-3 py-2 rounded-lg text-sm font-semibold bg-indigo-600 text-white shadow-md shadow-indigo-600/30 transition">
+                        Categorías
+                    </a>
+                    <a th:href="@{/productos}" class="px-3 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/80 transition">
+                        Productos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido Principal -->
+    <main class="flex-1 max-w-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col justify-center">
+        
+        <!-- Tarjeta de Confirmación de Eliminación -->
+        <div class="bg-slate-950/80 border border-rose-900/50 rounded-2xl p-8 shadow-2xl backdrop-blur relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-600 to-amber-600"></div>
+
+            <div class="flex items-start space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-rose-950/80 border border-rose-700/50 flex items-center justify-center flex-shrink-0 text-rose-400">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-2xl font-bold text-white tracking-tight">¿Eliminar esta categoría?</h1>
+                    <p class="text-sm text-slate-400 mt-1">
+                        Esta acción es irreversible. Se verificará la integridad referencial antes de proceder.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Resumen de la Categoría -->
+            <div class="mt-6 p-5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-3">
+                <div class="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">ID:</span>
+                    <span class="font-mono font-medium text-slate-200" th:text="${categoria.id}">1</span>
+                </div>
+                <div class="flex justify-between items-center text-sm border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">Nombre:</span>
+                    <span class="font-semibold text-white" th:text="${categoria.nombre}">Electrónica</span>
+                </div>
+                <div class="flex justify-between items-start text-sm border-b border-slate-800 pb-2">
+                    <span class="text-slate-400">Descripción:</span>
+                    <span class="font-medium text-slate-300 text-right max-w-xs" th:text="${categoria.descripcion != null && !#strings.isEmpty(categoria.descripcion) ? categoria.descripcion : 'Sin descripción'}">Detalle</span>
+                </div>
+                <div class="flex justify-between items-center text-sm pt-1">
+                    <span class="text-slate-400">Productos asociados:</span>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold"
+                          th:classappend="${categoria.productos != null && !categoria.productos.isEmpty()} ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-slate-800 text-slate-300 border border-slate-700'"
+                          th:text="${categoria.productos != null ? #lists.size(categoria.productos) : 0}">
+                        0
+                    </span>
+                </div>
+            </div>
+
+            <!-- Advertencia si tiene productos -->
+            <div th:if="${categoria.productos != null && !categoria.productos.isEmpty()}" class="mt-4 p-4 rounded-xl bg-amber-950/60 border border-amber-700/50 text-amber-300 text-xs flex items-center space-x-2">
+                <svg class="w-5 h-5 flex-shrink-0 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span><strong>Aviso:</strong> Esta categoría tiene productos asignados. La regla de negocio impedirá su eliminación hasta que los productos sean reasignados o eliminados.</span>
+            </div>
+
+            <!-- Formulario de Confirmación POST -->
+            <form th:action="@{/categorias/eliminar/{id}(id=${categoria.id})}" method="post" class="mt-8 flex items-center justify-end space-x-4">
+                <a th:href="@{/categorias}" class="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                    Cancelar
+                </a>
+                <button type="submit" id="btn-confirmar-eliminar" class="inline-flex items-center px-6 py-2.5 rounded-xl font-semibold text-sm bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white shadow-lg shadow-rose-600/30 hover:shadow-rose-600/50 transition transform hover:-translate-y-0.5">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                    Confirmar Eliminación
+                </button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <p>Catálogo JPA &bull; Universidad &bull; Unidad 8 &bull; Autor: Dallos</p>
+    </footer>
+
+</body>
+</html>
